@@ -1,0 +1,48 @@
+import random
+my_file = open("words_alpha.txt", "r")
+data = my_file.read()
+data_into_list = data.split("\n")
+my_file.close
+
+
+while True:
+    wins = 0
+    losses = 0
+    word = random.choice(data_into_list)
+    data_into_list.remove(word)
+    guesses = 7
+    blankword = ['_' for i in word]
+    indexlist = []
+
+    print("Welcome to the word guessing game! You can guess either an entire word or one letter. You have 7 Guesses")
+    while guesses >0:
+        if guesses < 7:
+            print(f' You have {guesses} guesses remaining')
+        ui = str(input('Please enter a guess:'))
+        guesses = guesses - 1
+        if len(ui) > 1:
+            if ui == word:
+                print(f"Nice work, the word was {word} and you guessed it correctly with {guesses} guesses remaining!")
+                break
+            else:
+                print("Sorry, that is not the word. Try again.")
+        if len(ui) == 1:
+            if ui in word:
+                indexlist = [i for i, ltr in enumerate(word) if ltr == ui]
+
+                for i in indexlist:
+                    blankword[i] = ui
+                if '_' not in blankword:
+                    print(f"Nice work, the word was {word} and you guessed it correctly with {guesses} guesses remaining!")
+                    wins += 1
+                    break
+                else:
+                    print(f'Good guess! Here are the letters you guessed correctly: {blankword}')
+            else:
+                print(f'Sorry, {ui} was not in the word!')
+    print(f'Sorry, no cigar! The word was {word}')
+    losses +=1
+    agane = input(f'Would you like to play again? Y/N').upper()
+    if agane == 'N':
+        print(f'Thanks for playing! You had {wins} wins and {losses} losses')
+        break
